@@ -43,17 +43,17 @@ function loadImg() {
         const j = Math.floor(Math.random() * (i + 1));
         [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
     }
-    for (let i = 0; i<button_random_array.length; i++) {
+    for (let i = 0; i < button_random_array.length; i++) {
         const j = Math.floor(Math.random() * (i + 1));
         [button_random_array[i], button_random_array[j]] = [button_random_array[j], button_random_array[i]];
     }
     // console.log(numbers);
     console.log(button_random_array);
-    
+
     let buttons = document.getElementsByClassName('inner_grid');
     console.log(buttons);
-     let a= 0;
-    for (let i = 0; i < 1; i++) {
+    let a = 0;
+    for (let i = 0; i < 8; i++) {
         // console.log(button_random_array[a++])
         // console.log(button_random_array[a++])
         addImageToButtons(buttons[button_random_array[a++]], numbers[i]); // 0 , 0
@@ -70,11 +70,9 @@ function addImageToButtons(button, randomNumber) {
     // newdiv.innerHTML= imgArr[randomNumber]
     newdiv.append(imgArr[randomNumber])
 
-console.log(imgArr[randomNumber],  'img')
-// console.log(newdiv, 'newdiv');
+    console.log(imgArr[randomNumber], 'img')
+    // console.log(newdiv, 'newdiv');
 
-    button.append(
-        
-    );
-    
+    button.append(newdiv);
+
 }
