@@ -1,38 +1,58 @@
-let img1 = 'images/one.jpg'
-let img2 = 'images/two.jpg'
-let img3 = 'images/three.jpg'
-let img4 = 'images/four.jpg'
-let img5 = 'images/five.jpg'
-let img6 = 'images/six.jpg'
-let img7 = 'images/seven.jpg'
-let img8 = 'images/eight.jpg'
-const pathForImageArray = [img1, img2, img3, img4, img5, img6, img7, img8];
-let imgArr = [];
-for (let i = 0; i < pathForImageArray.length; i++) {
-    let img = new Image();
-    img.src = pathForImageArray[i];
-    imgArr.push(img);
+const imgArr = [
+    'images/one.jpg',
+    'images/two.jpg',
+    'images/three.jpg',
+    'images/four.jpg',
+    'images/five.jpg',
+    'images/six.jpg',
+    'images/seven.jpg',
+    'images/eight.jpg'
+];
 
-}
-// console.log(imgArr);
+let buttons = document.querySelectorAll('.inner_grid');
 const start_button = document.getElementById('start');
 const reset_button = document.getElementById('reset');
 start_button.addEventListener('click', start_game);
 reset_button.addEventListener('click', reset_game);
+let intervalId;
+let time = 0;
+buttons.forEach(button=>{
+    button.addEventListener('click',()=>{
+        let first_click= button.querySelector('.image-container img').getAttribute('src');
+        let second_click= button.querySelector('.image-container img').getAttribute('src');
+        console.log(first_click);
+        console.log(second_click);
+        
+        button.firstChild.style.visibility='visible';
+        // console.log(button.querySelector('.image-container img').getAttribute('src'));
+        
+    })
+    
+})
 function start_game() {
     console.log('game started');
+    if (!intervalId) {
+
+        intervalId = setInterval(stop_watch, 1000);
+        loadImg();
+    }
     //.....show img first few second will figure out how to do that...
-    setInterval(stop_watch, 1000);
-    loadImg();
-
-
 }
 function reset_game() {
+    clearInterval(intervalId);
+    intervalId = null;
+    document.getElementById('timer').innerText = ` `;
+    for (let index = 0; index < buttons.length; index++) {
+
+        removeImagesFromButton(index);
+        buttons[index].style.visibility = "visible";
+
+    }
     console.log('game reset');
+    time = 0;
 
 }
 
-let time = 0;
 function stop_watch() {
     document.getElementById('timer').innerText = ` ${time++} seconds`
 }
@@ -47,39 +67,34 @@ function loadImg() {
         const j = Math.floor(Math.random() * (i + 1));
         [randomIndexForButton[i], randomIndexForButton[j]] = [randomIndexForButton[j], randomIndexForButton[i]];
     }
-    // console.log(randomIndexForImage);
-    console.log(randomIndexForButton);
 
-    let buttons = document.getElementsByClassName('inner_grid');
-    console.log(buttons);
+
+
     let a = 0;
     for (let i = 0; i < 8; i++) {
-        // console.log(randomIndexForButton[a++])
-        // console.log(randomIndexForButton[a++])
-        // console.log({a})
-        addImageToButtons(buttons[randomIndexForButton[a++]], randomIndexForImage[i]); // 0 , 0  i=0  bra=3  ni=2
-        // console.log(randomIndexForButton[a], "randomIndexForButton[a] - 1", randomIndexForImage[i])
-        // console.log("a1 : ",a,b,i);
-        // console.log({a})
-        addImageToButtons(buttons[randomIndexForButton[a++]], randomIndexForImage[i]);// 1, 0
-        // console.log({a});
-        
-        // console.log("a1 : ",a,c,i);
+        addImageToButtons(buttons[randomIndexForButton[a++]], randomIndexForImage[i]);
+
+        addImageToButtons(buttons[randomIndexForButton[a++]], randomIndexForImage[i]);
+
+
+
     }
+    setTimeout(() => {
+        document.querySelectorAll(".image-container").forEach(container => {
+            container.style.visibility = "hidden";
+        });
+        console.log("Everythig hidden");
+
+    }, 5000);
 
 }
 function addImageToButtons(button, randomNumber) {
-    // console.log(button,randomNumber, 'appended');
-    // button.innerHtml = 
-    let newdiv = document.createElement('div')
-    newdiv.classList.add(randomNumber)
-    // newdiv.innerHTML= imgArr[randomNumber]
-    // console.log({randomNumber})
-    newdiv.append(imgArr[randomNumber])
+    let newdiv = document.createElement('div');
+    newdiv.classList.add("image-container");
+    newdiv.innerHTML += `<img src="${imgArr[randomNumber]}">`;
+    button.appendChild(newdiv);
 
-    // console.log(imgArr[randomNumber], randomNumber, 'img')
-    console.log(newdiv);
-
-    button.append(newdiv);
-
+}
+function removeImagesFromButton(index) {
+    buttons[index].innerHTML = '';
 }
