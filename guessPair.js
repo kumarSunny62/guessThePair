@@ -16,27 +16,48 @@ start_button.addEventListener('click', start_game);
 reset_button.addEventListener('click', reset_game);
 let intervalId;
 let time = 0;
-buttons.forEach(button=>{
-    button.addEventListener('click',()=>{
-        let first_click= button.querySelector('.image-container img').getAttribute('src');
-        let second_click= button.querySelector('.image-container img').getAttribute('src');
-        console.log(first_click);
-        console.log(second_click);
-        
-        button.firstChild.style.visibility='visible';
-        // console.log(button.querySelector('.image-container img').getAttribute('src'));
-        
+let comapre_value;
+let prev_image;
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        let guessed_image = button.querySelector('.image-container img').getAttribute('src');
+        button.firstChild.style.visibility = 'visible';
+        if (!comapre_value) {
+            comapre_value = guessed_image;
+            prev_image=button.querySelector('.image-container img');
+            button.firstChild.style.visibility = 'visible';
+        }
+        else {
+            if (comapre_value === guessed_image) {
+                button.firstChild.style.visibility='visible';
+                comapre_value = null;
+                prev_image=null;
+                console.log("Matched");
+
+            }
+            else {
+                setTimeout(() => {
+                    button.firstChild.style.visibility = 'hidden';
+                    prev_image.style.visibility='hidden';
+                }, 500)
+                comapre_value=null;
+                // prev_image=null;
+            }
+        }
+        console.log(guessed_image);
+        console.log(prev_image);
+
     })
-    
+
 })
+
+
 function start_game() {
-    console.log('game started');
     if (!intervalId) {
 
         intervalId = setInterval(stop_watch, 1000);
         loadImg();
     }
-    //.....show img first few second will figure out how to do that...
 }
 function reset_game() {
     clearInterval(intervalId);
